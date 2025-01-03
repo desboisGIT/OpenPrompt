@@ -1,38 +1,169 @@
-# **🌟 Promptopedia AI – The Ultimate Prompt Encyclopedia**  
-
-**Promptopedia AI** is an open-source platform designed to empower users with the most optimized prompts for Large Language Models (LLMs) like ChatGPT, Claude, Bard, and more. Whether you're crafting essays, debugging code, generating creative content, or anything in between, **Promptopedia AI** offers a community-driven repository of high-quality prompts, categorized by subject and use case.  
+OpenPromptBank is an AI prompt library platform where users can explore, rank, and contribute AI prompts categorized by various topics. This platform features a searchable library, community-driven rankings, prompt performance benchmarks, and user profiles. The backend is powered by Django, Django REST Framework (DRF), and PostgreSQL, with Docker used for containerization.
 
 ---
 
-## **✨ Features**  
+## **API Documentation**
 
-- **🚀 Explore Optimized Prompts**: Browse and discover prompts tailored to specific subjects like Philosophy, Programming, Writing, Marketing, and more.  
-- **📈 Community-Driven**: Upvote and downvote prompts to ensure the best content rises to the top.  
-- **🔍 Advanced Search & Filters**: Quickly find prompts by category, tags, or specific LLMs.  
-- **💬 User Contributions**: Submit your own prompts, engage in discussions, and refine ideas collaboratively.  
-- **📊 Analytics**: View trending prompts and monitor prompt performance.  
+### **Base URL**
+`http://127.0.0.1:8000/api/auth/`
 
 ---
 
-## **🛠️ Tech Stack**  
+### **1. User Registration**
 
-- **Frontend**: React.js + Bootstrap for a clean and responsive user experience.  
-- **Backend**: Django + Django REST Framework (DRF) for robust API support.  
-- **Database**: PostgreSQL for reliable and scalable data management.  
-- **Authentication**: Django-Allauth for secure user logins, including social logins.  
+#### **Endpoint**
+`POST /register/`
+
+#### **Description**
+Allows new users to register by providing their username, email, and password.
+
+#### **Request Headers**
+None (public endpoint).
+
+#### **Request Body**
+```json
+{
+  "username": "your_username",
+  "email": "your_email@example.com",
+  "password": "your_secure_password"
+}
+```
+
+#### **Response**
+- **201 Created** (Successful Registration)
+  ```json
+  {
+    "message": "User registered successfully"
+  }
+  ```
+- **400 Bad Request** (Validation Errors)
+  ```json
+  {
+    "username": ["This field is required."],
+    "email": ["Enter a valid email address."]
+  }
+  ```
 
 ---
 
-## **🤝 Contributing**  
+### **2. User Login**
 
-We welcome contributions to improve Promptopedia AI! To get started:  
-1. Fork the repository.  
-2. Create a new branch (`git checkout -b feature/your-feature-name`).  
-3. Make your changes and test thoroughly.  
-4. Submit a pull request with a clear description.  
+#### **Endpoint**
+`POST /login/`
+
+#### **Description**
+Authenticates a user and returns a JSON Web Token (JWT) for session management.
+
+#### **Request Headers**
+None (public endpoint).
+
+#### **Request Body**
+```json
+{
+  "username": "your_username",
+  "password": "your_secure_password"
+}
+```
+
+#### **Response**
+- **200 OK** (Successful Login)
+  ```json
+  {
+    "refresh": "your_refresh_token",
+    "access": "your_access_token"
+  }
+  ```
+- **401 Unauthorized** (Invalid Credentials)
+  ```json
+  {
+    "error": "Invalid credentials"
+  }
+  ```
 
 ---
 
-## **📄 License**  
+### **3. Token Refresh**
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.  
+#### **Endpoint**
+`POST /token/refresh/`
+
+#### **Description**
+Generates a new access token using a valid refresh token.
+
+#### **Request Headers**
+None (public endpoint).
+
+#### **Request Body**
+```json
+{
+  "refresh": "your_refresh_token"
+}
+```
+
+#### **Response**
+- **200 OK** (Token Refreshed)
+  ```json
+  {
+    "access": "new_access_token"
+  }
+  ```
+- **401 Unauthorized** (Invalid/Expired Refresh Token)
+  ```json
+  {
+    "detail": "Token is invalid or expired"
+  }
+  ```
+
+---
+
+### **4. Protected Routes**
+
+#### **Example Endpoint**
+`GET /protected/`
+
+#### **Description**
+Access restricted to authenticated users only. Requires a valid JWT access token in the request header.
+
+#### **Request Headers**
+```json
+{
+  "Authorization": "Bearer your_access_token"
+}
+```
+
+#### **Response**
+- **200 OK** (Authorized)
+  ```json
+  {
+    "message": "You are authenticated!"
+  }
+  ```
+- **401 Unauthorized** (Invalid or Missing Token)
+  ```json
+  {
+    "detail": "Authentication credentials were not provided."
+  }
+  ```
+
+---
+
+### **Error Codes**
+| Status Code | Description                          |
+|-------------|--------------------------------------|
+| 200         | Success                              |
+| 201         | Resource created                    |
+| 400         | Bad request (validation error)      |
+| 401         | Unauthorized (authentication failed)|
+| 500         | Server error                        |
+
+---
+
+### **Usage Notes**
+1. **Token Storage**: The React frontend should store the `access` and `refresh` tokens securely (e.g., `localStorage` or `httpOnly cookies`).
+2. **Authorization Header**: Include the `Authorization: Bearer <access_token>` header in requests to protected routes.
+3. **Token Refresh Flow**:
+   - Use `/token/refresh/` to renew the access token before it expires.
+   - Redirect to login if the refresh token also expires.
+
+---
+
