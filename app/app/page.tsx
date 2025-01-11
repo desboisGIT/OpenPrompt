@@ -105,7 +105,7 @@ export default function Home() {
             />
             <LandingCard
               title="Fix all the issues in my code"
-              // this is a callback to my bad ass code
+              // this is a callback to my bad ass code, x) lol ethan
               subtitle="FOR DEVELOPERS"
               icon={DEVELOPER_ICON}
             />
