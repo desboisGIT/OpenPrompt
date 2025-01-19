@@ -1,0 +1,20 @@
+{
+    "landing": {
+        "navigation": {
+            "trending": "Trending",
+            "staff_picks": "Staff Picks",
+            "library": "Library",
+            "for_developers": "For Developers",
+            "portal": "Portal",
+            "button": "Get Started — It's free!"
+        },
+        "hero": {
+            "header": "Say 'Goodbye' to the Prompt Fiddling",
+            "header_color": "For Good",
+            "description": "We're an AI prompt library platform where users can explore, rank, and contribute prompts for your favourite LLMs by various topics.",
+            "button_l": "See what's trending",
+            "button_r": "Browse our Library",
+            "trending_prompts": "Today's Trending Prompts"
+        }
+    }
+}

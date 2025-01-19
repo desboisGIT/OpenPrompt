@@ -1,0 +1,20 @@
+{
+    "landing": {
+        "navigation": {
+            "trending": "Tendance",
+            "staff_picks": "Favoris",
+            "library": "Bibliothèque",
+            "for_developers": "Développeurs",
+            "portal": "Portail",
+            "button": "Commencez, c'est gratuit !"
+        },
+        "hero": {
+            "header": "Dites « Au revoir » aux problèmes liés aux requêtes IA",
+            "header_color": "Maintenant",
+            "description": "Nous sommes une plate-forme de bibliothèque d'invites d'IA où les utilisateurs peuvent explorer, classer et contribuer à des invites pour vos LLM préférés par divers sujets.",
+            "button_l": "Découvrez les populaires",
+            "button_r": "Parcourez la biblio",
+            "trending_prompts": "Prompts chauds du jour"
+        }
+    }
+}
