@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { TRPCReactProvider } from "@/trpc/react";
 
 import { getMessages, setRequestLocale } from "next-intl/server";
+import { SessionProvider } from "next-auth/react";
 
 /**
  * This looks packed and daunting, but this will help our rankings in Google and build our identity
@@ -91,17 +92,20 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
     children,
-    params: { locale }
+    params
 }: Readonly<{ children: React.ReactNode; params: { locale: string } }>) {
+    const { locale } = await params;
 
     setRequestLocale(locale)
 
     return (
-        <html lang={locale} className={`${GeistSans.variable}`}>
+        <html className={`${GeistSans.variable}`}>
             <body>
-                <NextIntlClientProvider messages={await getMessages()}>
-                    <TRPCReactProvider>{children}</TRPCReactProvider>
-                </NextIntlClientProvider>
+                <SessionProvider>
+                    <NextIntlClientProvider messages={await getMessages()}>
+                        <TRPCReactProvider>{children}</TRPCReactProvider>
+                    </NextIntlClientProvider>
+                </SessionProvider>
             </body>
         </html>
     );

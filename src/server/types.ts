@@ -1,0 +1,1 @@
+export type UserRole = "owner" | "manager" | "moderator" | "developer" | "member"

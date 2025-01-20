@@ -6,7 +6,8 @@
             "library": "Bibliothèque",
             "for_developers": "Développeurs",
             "portal": "Portail",
-            "button": "Commencez, c'est gratuit !"
+            "button": "Commencez, c'est gratuit !",
+            "button_signed_in": "Dashboard"
         },
         "hero": {
             "header": "Dites « Au revoir » aux problèmes liés aux requêtes IA",

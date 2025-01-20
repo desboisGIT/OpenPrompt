@@ -6,7 +6,8 @@
             "library": "Library",
             "for_developers": "For Developers",
             "portal": "Portal",
-            "button": "Get Started — It's free!"
+            "button": "Get Started — It's free!",
+            "button_signed_in": "Dashboard"
         },
         "hero": {
             "header": "Say 'Goodbye' to the Prompt Fiddling",

@@ -10,6 +10,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { getMessages, setRequestLocale } from "next-intl/server";
+import { SessionProvider } from "next-auth/react";
 
 /**
  * This looks packed and daunting, but this will help our rankings in Google and build our identity
@@ -100,9 +101,11 @@ export default async function RootLayout({
     return (
         <html lang={locale} className={`${GeistSans.variable}`}>
             <body>
-                <NextIntlClientProvider messages={await getMessages()}>
-                    <TRPCReactProvider>{children}</TRPCReactProvider>
-                </NextIntlClientProvider>
+                <SessionProvider>
+                    <NextIntlClientProvider messages={await getMessages()}>
+                        <TRPCReactProvider>{children}</TRPCReactProvider>
+                    </NextIntlClientProvider>
+                </SessionProvider>
             </body>
         </html>
     );
