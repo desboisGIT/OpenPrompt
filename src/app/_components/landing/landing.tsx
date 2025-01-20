@@ -15,7 +15,7 @@ const prompts = [
 ];
 
 export default function Hero() {
-    const { data: session, status } = useSession()
+    const { status } = useSession()
 
     const redirect = `/api/auth/${status == "authenticated" ? "signout" : "signin"}`
 
@@ -41,7 +41,7 @@ export default function Hero() {
                     </nav>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button className="bg-red-500 hover:bg-red-600 text-white" onClick={() => { window.location.assign(redirect)}}>
+                    <Button className="bg-red-500 hover:bg-red-600 text-white" onClick={() => { window.location.assign(redirect) }}>
                         {status != "authenticated" && n("button")}
                         {status == "authenticated" && n("button_signed_in")}
                     </Button>

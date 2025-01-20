@@ -7,8 +7,7 @@ import { type Metadata } from "next";
 
 import { NextIntlClientProvider } from 'next-intl';
 import { TRPCReactProvider } from "@/trpc/react";
-import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { SessionProvider } from "next-auth/react";
 
@@ -56,8 +55,10 @@ export const metadata: Metadata = {
     alternates: {
         canonical: "https://openpromptbank.com",
         languages: {
-            "en": "https://openpromptbank.com/en/",
-            "fr": "https://openpromptbank.com/fr/",
+            "en-US": "https://openpromptbank.com/en-US/",
+            "en-CA": "https://openpromptbank.com/en-CA/",
+            "fr-FR": "https://openpromptbank.com/fr-FR/",
+            "fr-CA": "https://openpromptbank.com/fr-CA/",
         }
     },
     icons: [{
@@ -91,13 +92,14 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
     children,
-    params: { locale }
+    params
 }: Readonly<{ children: React.ReactNode; params: { locale: string } }>) {
+    const { locale } = await params;
 
     setRequestLocale(locale)
 
     return (
-        <html lang={locale} className={`${GeistSans.variable}`}>
+        <html className={`${GeistSans.variable}`}>
             <body>
                 <SessionProvider>
                     <NextIntlClientProvider messages={await getMessages()}>
