@@ -1,67 +1,142 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+    provider = "mongodb"
     url      = env("DATABASE_URL")
 }
 
 model Dummy {
-    id        Int      @id @default(autoincrement())
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    @@index([id])
 }
 
-// Necessary for Next auth
+model Prompt {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    aiPrompt    String
+    title       String
+    description String?
+    brandingId  String   @db.ObjectId
+    teamId      String  @db.ObjectId
+    userId      String   @db.ObjectId
+
+    branding Branding @relation(fields: [brandingId], references: [id])
+    team     Team     @relation(fields: [teamId], references: [id])
+    user     User     @relation(fields: [userId], references: [id])
+}
+
+model Branding {
+    id             String  @id @default(auto()) @map("_id") @db.ObjectId
+    name           String
+    logoUrl        String?
+    primaryColor   String?
+    secondaryColor String?
+    font           String?
+
+    Prompt Prompt[]
+}
+
+model Team {
+    id        String        @id @default(auto()) @map("_id") @db.ObjectId
+    name      String        @unique
+    createdAt DateTime      @default(now())
+    updatedAt DateTime      @updatedAt
+    prompts   Prompt[]
+    members   TeamMember[]
+    settings  TeamSettings?
+}
+
+model TeamMember {
+    id     String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId String   @db.ObjectId
+    teamId String   @db.ObjectId
+    role   TeamRole @default(MEMBER)
+
+    user User  @relation(fields: [userId], references: [id])
+    team Team? @relation(fields: [teamId], references: [id])
+
+    @@unique([userId, teamId])
+}
+
+enum TeamRole {
+    OWNER
+    ADMIN
+    MEMBER
+}
+
+model User {
+    id            String        @id @default(auto()) @map("_id") @db.ObjectId
+    name          String?
+    email         String?       @unique
+    emailVerified DateTime?
+    image         String?
+    role          UserRole      @default(MEMBER)
+    accounts      Account[]
+    sessions      Session[]
+    teams         TeamMember[]
+    settings      UserSettings?
+    Prompt        Prompt[]
+}
+
+enum UserRole {
+    ADMIN
+    MEMBER
+    GUEST
+}
+
+model UserSettings {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    userId String @unique @db.ObjectId
+
+    user User @relation(fields: [userId], references: [id])
+}
+
+model TeamSettings {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    teamId String @unique @db.ObjectId
+
+    team Team @relation(fields: [teamId], references: [id])
+}
+
+// auto iterate through each object in this document and 
+// create a form to adjust it
+
+// Necessary for Next Auth
 model Account {
-    id                       String  @id @default(cuid())
-    userId                   String
+    id                       String  @id @default(auto()) @map("_id") @db.ObjectId
+    userId                   String  @db.ObjectId
     type                     String
     provider                 String
     providerAccountId        String
-    refresh_token            String? // @db.Text
-    access_token             String? // @db.Text
+    refresh_token            String?
+    access_token             String?
     expires_at               Int?
     token_type               String?
     scope                    String?
-    id_token                 String? // @db.Text
+    id_token                 String?
     session_state            String?
-    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     refresh_token_expires_in Int?
+
+    user User @relation(fields: [userId], references: [id])
 
     @@unique([provider, providerAccountId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
     sessionToken String   @unique
-    userId       String
+    userId       String   @db.ObjectId
     expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
 
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    role          String    @default("member")
-    accounts      Account[]
-    sessions      Session[]
+    user User @relation(fields: [userId], references: [id])
 }
 
 model VerificationToken {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
     identifier String
     token      String   @unique
     expires    DateTime

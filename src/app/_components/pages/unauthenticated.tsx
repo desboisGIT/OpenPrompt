@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import React from 'react'
 
-const DashboardUnauthenticated = () => {
+const UnauthenticatedPage = () => {
     return (
         <div className='flex flex-col h-screen w-full justify-center items-center bg-gray-100 px-6'>
             <div className="flex flex-col justify-center items-center space-y-6 bg-white p-10 shadow-lg rounded-lg border border-gray-200">
@@ -26,4 +26,4 @@ const DashboardUnauthenticated = () => {
     )
 }
 
-export default DashboardUnauthenticated
+export default UnauthenticatedPage

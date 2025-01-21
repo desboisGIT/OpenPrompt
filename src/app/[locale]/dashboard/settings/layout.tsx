@@ -16,8 +16,8 @@ import { SessionProvider } from "next-auth/react";
  */
 export const metadata: Metadata = {
     title: {
-        default: "OpenPromptBank",
-        template: "%s | Say Goodbye To The Prompt Fiddling For Good"
+        default: "Settings",
+        template: "%s | OpenPromptBank"
     },
     description: "We're an AI prompt library platform where users can explore, rank, and contribute prompts for your favourite LLMs by various topics.",
     applicationName: "OpenPromptBank",
